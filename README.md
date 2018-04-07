@@ -14,8 +14,8 @@ My email is 504415750@qq.com
 
 ## Functions
 Now this demo has the following functions: 
-+ import / export XML files;
++ import XML files;
 + delete / add single tag;
 + delete / add / edit single tag's attributes;
 
-I will soon update some new functions , like editing the textContent right on the tags rather than in the attributes sidebar ,  making some more function buttons...
+I will soon update some new functions , like exporting the edited xml file ,editing the textContent right on the tags rather than in the attributes sidebar ,  making some more function buttons...
