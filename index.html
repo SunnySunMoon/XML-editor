@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>XML Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+    <script src="lib/vue.js"></script>
+    <script src="lib/myKit.js"></script>
+</head>
+
+<body>
+
+    <header id="head">
+
+        <div class="headButton">
+            <p ref="importButtonText" class="buttonText">Import Files</p>
+            <input ref="fileInput" type="file" accept="application/xml"
+                @change="readXML">
+        </div>
+
+        <div class="headButton">
+            <p class="buttonText">Export Files</p>
+        </div>
+
+    </header>
+   
+    <section id="body">
+        <div id="attributes">
+            <header id="attributeTitle">Attribute</header>
+            <section id="attributesWrapper">
+                <div id="newAttribute">
+                    <i class="fa fa-plus" title="click to add new attribute"
+                        @click="isAddAttr = true">
+                    </i>
+                    <div v-if="isAddAttr">
+                        <div>
+                            <input v-model="newAttrName">
+                        </div>
+                        <div>
+                            <input v-model="newAttrValue">
+                        </div>
+                        <i class="fa fa-check" @click="saveNewAttr"></i>
+                    </div>
+                </div>
+                <div id="attributeList">
+                    <attribute-item class="attributeDiv"
+                    v-for="(value,index) of clickedTag" :key="index"
+                    :value="value" :name="index"
+                    v-if="!(value instanceof Array)"
+                    v-on:edit="editAttribute">
+                    </attribute-item>
+                </div>                   
+            </section>
+        </div>
+
+        <div id="tags">
+            <recursion-tag 
+                :data="xmlObject" :peers="[]" :self="0" @remove="removeRoot">
+            </recursion-tag>
+        </div>
+
+    </section>
+    
+    <footer id="foot"></footer>
+   
+    <aside id="aside"></aside>
+</body>
+<script src="lib/convert.js"></script>
+<script src="main.js"></script>
+
+</html>
