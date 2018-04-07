@@ -1,0 +1,205 @@
+body{
+    height: 100%;
+    background-color: white;
+    position: static;
+    cursor: default;
+}
+
+#head{
+    height: 3rem;
+    line-height: 3rem;
+    position: static;
+}
+
+#body{
+    position: absolute;
+    top: 3.5rem;
+    bottom: 1rem;
+    left: 0.8rem;
+    right: 1rem;
+}
+.inline{
+    display: inline-block;
+}
+
+.headButton{
+    position: relative;
+    display: inline-block;
+    background: lightblue;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: white;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 0rem;
+    cursor: pointer;
+    box-shadow: 0.1rem 0.1rem 0.5rem lightgray;
+}
+.headButton:hover {
+    background-color: rgb(173,216,250);
+}
+.headButton input{
+    position: absolute;
+    font-size: 2rem;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+
+#attributes{
+    position: absolute;
+    width: 18rem;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0rem;
+    min-height: 30rem;
+    box-shadow: 0rem 0rem 1rem lightgrey;
+}
+
+#tags{
+    margin-left: 20rem;
+    position: absolute;
+    left: 0;
+    right: 0.5rem;
+    min-width: 40rem;
+    top: 0.5rem;
+    bottom: 0rem;
+    overflow: auto;
+    min-height: 30rem;
+    box-shadow: 0 0 1rem lightgrey;
+}
+#tags::-webkit-scrollbar{
+    width: 0.4rem;
+    height: 0.4rem;
+}
+#tags::-webkit-scrollbar-thumb{
+    border-radius: 1rem;
+    background-color: lightblue;
+}
+#tags::-webkit-scrollbar-track{
+    border-radius: 0.5rem; 
+    background-color: white;
+}
+
+#attributeTitle{
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0.25rem 0 0.25rem 0;
+    background-color: lightblue;
+    color: white;
+}
+#attributesWrapper{
+    bottom: 0rem;
+    position: absolute;
+    top: 2.5rem;
+    right: 0rem;
+    left: 0rem;
+    min-height: 25rem;
+    overflow: auto;
+}
+#attributesWrapper::-webkit-scrollbar{
+    width: 0.4rem;
+    height: 0.4rem;
+}
+#attributesWrapper::-webkit-scrollbar-thumb{
+    border-radius: 1rem;
+    background-color: lightblue;
+}
+#attributesWrapper::-webkit-scrollbar-track{
+    border-radius: 0.5rem; 
+    background-color: white;
+}
+
+#newAttribute{
+    text-align: center;
+}
+
+/* tag cards style */
+.tagCard{
+    height: 2.3rem;
+    line-height: 2.3rem;
+    font-size: 1.2rem;
+    margin: 0.5rem 1rem 0.4rem 0.8rem;
+    background-color: white;
+    padding-left: 0.5rem;
+    border-left: solid lightblue;
+    box-shadow: 0 0 0.2rem lightgrey;
+}
+.tagCard:hover{
+    background-color: rgba(173, 216, 230,0.1);
+}
+
+.cardText{
+    height: 2.3rem;
+    line-height: 2.3rem;
+    margin: 0rem;
+    display: inline-block;
+}
+
+/*fontawesome style*/
+.fa{
+    font-size: 1.2rem;
+    font-weight: lighter;
+    text-align: center;
+    cursor: pointer;
+    height: 2rem;
+    width: 2rem;
+    line-height: 2rem;
+    color: white;
+}
+.fa:hover{
+    color: gray;
+}
+.fa-close{
+    float: right;
+}
+.fa-edit{
+    float: right;
+}
+.fa-plus{
+    color: gray;
+}
+.fa-plus:hover{
+    color: lightgray;
+}
+#newAttribute .fa-check{
+    color: gray;
+}
+.tagCard .fa-close{
+    color: lightblue;
+}
+.tagCard .fa-close:hover{
+    color: rgba(0, 0, 0,0.4);
+}
+.tagCard .fa-plus{
+    height: 2.3rem;
+    line-height: 2.3rem;
+    float: left;
+}
+
+/*attributes item style*/
+#attributeList{
+    margin-left: 0.5rem;
+}
+.attributeDiv p{
+    border-left: solid lightblue;
+    padding-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-right: 0.5rem;
+    height: 2rem;
+    line-height: 2rem;
+    max-width: 12.5rem;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.attributeDiv:hover{
+    background-color: rgba(173, 216, 230,0.8);
+}
+.attributeDiv p{
+    margin: 0rem;
+}
