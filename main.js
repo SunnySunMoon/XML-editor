@@ -64,7 +64,8 @@ Vue.component('recursion-tag',{
     methods: {
         collapse (){
             this.isOpen = !this.isOpen;
-            bus.$emit('click-tag',this.data);
+            let that = this;
+            bus.$emit('click-tag',that.data);
         },
         handleClickRemove (){
             this.$emit('remove',this.self);
@@ -74,10 +75,12 @@ Vue.component('recursion-tag',{
             bus.$emit('clear-attributes');
         },
         addChild () {
-            this.childNodes.unshift({
-                xtag: 'newTag',
-                text: ''
-            });
+            // this.childNodes.unshift({
+            //     xtag: 'newTag',
+            //     text: ''
+            // });
+            let that = this;
+            bus.$emit('add-tag',that.data);
             this.isOpen = true; 
         }
     }
@@ -207,6 +210,17 @@ var main = new Vue({
         });
         bus.$on('clear-attributes',function(){
             that.clickedTag = {};
+        });
+        bus.$on('add-tag',function(data){
+            that.clickedTag = data;
+            for(let x in that.clickedTag){
+                if(that.clickedTag[x] instanceof Array){
+                    that.clickedTag[x].unshift({
+                        xtag: 'newTag',
+                        text: ''
+                    });
+                }
+            }
         })
     }
 })
