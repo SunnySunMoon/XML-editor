@@ -47,6 +47,11 @@ body{
     top: 0;
     opacity: 0;
 }
+#undo{
+    position: fixed;
+    right: 0.5rem;
+    top: 0.5rem;
+}
 
 #attributes{
     position: absolute;
