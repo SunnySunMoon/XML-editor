@@ -22,7 +22,7 @@
         </div>
 
         <div class="headButton">
-            <p class="buttonText">Export Files</p>
+            <p class="buttonText" @click="exportXML">Export Files</p>
         </div>
 
     </header>
@@ -62,6 +62,9 @@
             </recursion-tag>
         </div>
 
+        <div class="headButton" id="undo">
+            <p class="buttonText" @click="undo">Undo</p>
+        </div>
     </section>
     
     <footer id="foot"></footer>

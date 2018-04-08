@@ -5,12 +5,14 @@ Vue.component('recursion-tag',{
     name: 'tagCard',
     template: '\
     <div class="tagCard" :style="styleObj" @click.stop="collapse">\
+        <i class="fa fa-caret-right" v-show="!isOpen&&hasChild"></i> \
+        <i class="fa fa-caret-down" v-show="isOpen&&hasChild"></i>\
         <i class="fa fa-plus" title="addChild" @click.stop="addChild"></i>\
         <p class="cardText"> {{ name }} </p>\
         <i class="fa fa-close" title="remove" @click.stop="handleClickRemove"></i>\
         <div v-for="(child,index) of childNodes" v-show="isOpen">\
             <recursion-tag :data=child :peers="childNodes" \
-            @remove="removeThisTag(self)" :self="index">\
+            @remove="removeThisTag" :self="index">\
             </recursion-tag>\
         </div>\
     </div>\
@@ -30,7 +32,7 @@ Vue.component('recursion-tag',{
     },
     data (){
         return {
-            isOpen: false,  //mark the collapse status
+            isOpen: true,  //mark the collapse status
         }
     },
     computed: {
@@ -60,6 +62,16 @@ Vue.component('recursion-tag',{
             }
             return [];
         },
+        hasChild (){
+            for(let x in this.data){
+                if(this.data[x] instanceof Array){
+                    if(this.data[x].length > 0){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     },
     methods: {
         collapse (){
@@ -70,15 +82,12 @@ Vue.component('recursion-tag',{
         handleClickRemove (){
             this.$emit('remove',this.self);
         },
-        removeThisTag (index) {
-            this.childNodes.splice(index,1);
+        removeThisTag (indexNum) {
+            bus.$emit('edit-happen');
+            this.childNodes.splice(indexNum,1);
             bus.$emit('clear-attributes');
         },
         addChild () {
-            // this.childNodes.unshift({
-            //     xtag: 'newTag',
-            //     text: ''
-            // });
             let that = this;
             bus.$emit('add-tag',that.data);
             this.isOpen = true; 
@@ -162,7 +171,17 @@ var head = new Vue({
                 //emit event to let the main instance get the data and dispatch to the recursion component   
                 bus.$emit('get-data',that.xmlObject); 
             }
+        },
+        exportXML() {
+            let result = this.xmlObject;
+            let parser = new JsonToXml();
+            result = parser.parse(result);
+            console.log(result);
+            export_raw('file.xml',result);
         }
+    },
+    mounted (){
+        let that = this;
     }
 });
 
@@ -170,14 +189,27 @@ var head = new Vue({
 var main = new Vue({
     el: '#body',
     data: {
-        xmlObject: {xtag: 'Root'},
+        xmlObject: {
+            xtag: 'Root',
+            Root: [], // the initial tag's childnodes array object
+        },
         clickedTag: {},  
         isAddAttr: false,
         newAttrName: 'newName',
         newAttrValue: 'newValue',
+        historyObject: [],
     },
     methods: {
+        record() {
+            let a = myKit.deepCopy(this.xmlObject);
+            this.historyObject.push(a);
+            //I think storing 10 records is enough 
+            if(this.historyObject.length > 10){
+                this.historyObject.shift();
+            }
+        },
         editAttribute(data){
+            this.record();           
             switch(data.editWay){
                 case 'remove':
                     if(data.name == 'xtag'){
@@ -191,11 +223,21 @@ var main = new Vue({
             }
         },
         saveNewAttr(){
+            this.record();
             this.$set(this.clickedTag,this.newAttrName,this.newAttrValue);
             this.isAddAttr = false;
         },
         removeRoot(){
+            this.record();
             this.xmlObject = {};
+            this.clickedTag = {};
+        },
+        undo() {
+            if(this.historyObject.length==0){
+                alert('no history found!');
+                return
+            }
+            this.xmlObject = this.historyObject.pop();
             this.clickedTag = {};
         }
 
@@ -212,16 +254,22 @@ var main = new Vue({
             that.clickedTag = {};
         });
         bus.$on('add-tag',function(data){
+            that.record();
             that.clickedTag = data;
             for(let x in that.clickedTag){
                 if(that.clickedTag[x] instanceof Array){
                     that.clickedTag[x].unshift({
                         xtag: 'newTag',
-                        text: ''
+                        text: '',
+                        newTag: [], //new tag's childnodes array object
                     });
                 }
             }
-        })
+        });
+        //mainly for the remove child event in tag componnet
+        bus.$on('edit-happen',function(){
+            that.record();
+        });
     }
 })
 

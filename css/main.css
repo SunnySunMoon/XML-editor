@@ -47,6 +47,11 @@ body{
     top: 0;
     opacity: 0;
 }
+#undo{
+    position: fixed;
+    right: 0.5rem;
+    top: 0.5rem;
+}
 
 #attributes{
     position: absolute;
@@ -147,7 +152,7 @@ body{
     text-align: center;
     cursor: pointer;
     height: 2rem;
-    width: 2rem;
+    width: 1.5rem;
     line-height: 2rem;
     color: white;
 }
@@ -156,6 +161,7 @@ body{
 }
 .fa-close{
     float: right;
+    margin-right: 0.2rem;
 }
 .fa-edit{
     float: right;
@@ -179,6 +185,18 @@ body{
     height: 2.3rem;
     line-height: 2.3rem;
     float: left;
+}
+.tagCard .fa-caret-right{
+    height: 2.3rem;
+    line-height: 2.3rem;
+    float: left;
+    color: gray;
+}
+.tagCard .fa-caret-down{
+    height: 2.3rem;
+    line-height: 2.3rem;
+    float: left;
+    color: gray;
 }
 
 /*attributes item style*/
