@@ -83,7 +83,7 @@ Vue.component('recursion-tag',{
             this.$emit('remove',this.self);
         },
         removeThisTag (indexNum) {
-            console.log('child index: '+indexNum,'peers: ',this.childNodes)
+            bus.$emit('edit-happen');
             this.childNodes.splice(indexNum,1);
             bus.$emit('clear-attributes');
         },
@@ -179,6 +179,9 @@ var head = new Vue({
             console.log(result);
             export_raw('file.xml',result);
         }
+    },
+    mounted (){
+        let that = this;
     }
 });
 
@@ -194,9 +197,19 @@ var main = new Vue({
         isAddAttr: false,
         newAttrName: 'newName',
         newAttrValue: 'newValue',
+        historyObject: [],
     },
     methods: {
+        record() {
+            let a = myKit.deepCopy(this.xmlObject);
+            this.historyObject.push(a);
+            //I think storing 10 records is enough 
+            if(this.historyObject.length > 10){
+                this.historyObject.shift();
+            }
+        },
         editAttribute(data){
+            this.record();           
             switch(data.editWay){
                 case 'remove':
                     if(data.name == 'xtag'){
@@ -210,11 +223,21 @@ var main = new Vue({
             }
         },
         saveNewAttr(){
+            this.record();
             this.$set(this.clickedTag,this.newAttrName,this.newAttrValue);
             this.isAddAttr = false;
         },
         removeRoot(){
+            this.record();
             this.xmlObject = {};
+            this.clickedTag = {};
+        },
+        undo() {
+            if(this.historyObject.length==0){
+                alert('no history found!');
+                return
+            }
+            this.xmlObject = this.historyObject.pop();
             this.clickedTag = {};
         }
 
@@ -231,6 +254,7 @@ var main = new Vue({
             that.clickedTag = {};
         });
         bus.$on('add-tag',function(data){
+            that.record();
             that.clickedTag = data;
             for(let x in that.clickedTag){
                 if(that.clickedTag[x] instanceof Array){
@@ -241,7 +265,11 @@ var main = new Vue({
                     });
                 }
             }
-        })
+        });
+        //mainly for the remove child event in tag componnet
+        bus.$on('edit-happen',function(){
+            that.record();
+        });
     }
 })
 
