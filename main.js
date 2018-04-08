@@ -5,6 +5,8 @@ Vue.component('recursion-tag',{
     name: 'tagCard',
     template: '\
     <div class="tagCard" :style="styleObj" @click.stop="collapse">\
+        <i class="fa fa-caret-right" v-show="!isOpen&&hasChild"></i> \
+        <i class="fa fa-caret-down" v-show="isOpen&&hasChild"></i>\
         <i class="fa fa-plus" title="addChild" @click.stop="addChild"></i>\
         <p class="cardText"> {{ name }} </p>\
         <i class="fa fa-close" title="remove" @click.stop="handleClickRemove"></i>\
@@ -30,7 +32,7 @@ Vue.component('recursion-tag',{
     },
     data (){
         return {
-            isOpen: false,  //mark the collapse status
+            isOpen: true,  //mark the collapse status
         }
     },
     computed: {
@@ -60,6 +62,16 @@ Vue.component('recursion-tag',{
             }
             return [];
         },
+        hasChild (){
+            for(let x in this.data){
+                if(this.data[x] instanceof Array){
+                    if(this.data[x].length > 0){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     },
     methods: {
         collapse (){
