@@ -10,7 +10,7 @@ Vue.component('recursion-tag',{
         <i class="fa fa-close" title="remove" @click.stop="handleClickRemove"></i>\
         <div v-for="(child,index) of childNodes" v-show="isOpen">\
             <recursion-tag :data=child :peers="childNodes" \
-            @remove="removeThisTag(self)" :self="index">\
+            @remove="removeThisTag" :self="index">\
             </recursion-tag>\
         </div>\
     </div>\
@@ -70,15 +70,12 @@ Vue.component('recursion-tag',{
         handleClickRemove (){
             this.$emit('remove',this.self);
         },
-        removeThisTag (index) {
-            this.childNodes.splice(index,1);
+        removeThisTag (indexNum) {
+            console.log('child index: '+indexNum,'peers: ',this.childNodes)
+            this.childNodes.splice(indexNum,1);
             bus.$emit('clear-attributes');
         },
         addChild () {
-            // this.childNodes.unshift({
-            //     xtag: 'newTag',
-            //     text: ''
-            // });
             let that = this;
             bus.$emit('add-tag',that.data);
             this.isOpen = true; 
@@ -162,6 +159,13 @@ var head = new Vue({
                 //emit event to let the main instance get the data and dispatch to the recursion component   
                 bus.$emit('get-data',that.xmlObject); 
             }
+        },
+        exportXML() {
+            let result = this.xmlObject;
+            let parser = new JsonToXml();
+            result = parser.parse(result);
+            console.log(result);
+            export_raw('file.xml',result);
         }
     }
 });
@@ -170,7 +174,10 @@ var head = new Vue({
 var main = new Vue({
     el: '#body',
     data: {
-        xmlObject: {xtag: 'Root'},
+        xmlObject: {
+            xtag: 'Root',
+            Root: [], // the initial tag's childnodes array object
+        },
         clickedTag: {},  
         isAddAttr: false,
         newAttrName: 'newName',
@@ -217,7 +224,8 @@ var main = new Vue({
                 if(that.clickedTag[x] instanceof Array){
                     that.clickedTag[x].unshift({
                         xtag: 'newTag',
-                        text: ''
+                        text: '',
+                        newTag: [], //new tag's childnodes array object
                     });
                 }
             }
