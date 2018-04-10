@@ -14,7 +14,7 @@ My email is 504415750@qq.com
 
 ## Functions
 Now this demo has the following functions: 
-+ import XML files;
++ import / export XML files;
 + delete / add single tag;
 + delete / add / edit single tag's attributes;
 + undo operations
