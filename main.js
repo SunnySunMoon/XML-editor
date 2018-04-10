@@ -167,7 +167,6 @@ var head = new Vue({
                 preProcess(xmlDom);
                 that.xmlObject = null;
                 that.xmlObject = xmlDomToJson(xmlDom.childNodes[0]); 
-                console.log(that.xmlObject);
                 //emit event to let the main instance get the data and dispatch to the recursion component   
                 bus.$emit('get-data',that.xmlObject); 
             }
@@ -176,7 +175,6 @@ var head = new Vue({
             let result = this.xmlObject;
             let parser = new JsonToXml();
             result = parser.parse(result);
-            console.log(result);
             export_raw('file.xml',result);
         }
     },
